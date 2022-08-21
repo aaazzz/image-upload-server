@@ -1,4 +1,6 @@
 const express = require('express');
+const dotenv = require('dotenv');
+const basicAuth = require('express-basic-auth');
 const fileUpload = require('express-fileupload');
 const { v4: uuidv4 } = require('uuid');
 const cors = require('cors');
@@ -6,6 +8,13 @@ const morgan = require('morgan');
 const path = require('path');
 
 const app = express();
+dotenv.config();
+const BASIC_AUTH_ID = process.env.BASIC_AUTH_ID;
+const BASIC_AUTH_PASSWORD = process.env.BASIC_AUTH_PASSWORD;
+
+app.use(basicAuth({
+  users: { [BASIC_AUTH_ID]: BASIC_AUTH_PASSWORD }
+}))
 
 app.use(morgan('dev'));
 app.use(cors());
